@@ -118,7 +118,7 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
             return BrsInvalid.Instance;
         }
 
-        this.environment.define(statement.name.text!, toCallable(statement));
+        this.environment.define(statement.name.text!, toCallable(statement.func, statement.name.text));
         return BrsInvalid.Instance;
     }
 
@@ -567,6 +567,10 @@ export class Interpreter implements Expr.Visitor<BrsType>, Stmt.Visitor<BrsType>
 
             return BrsInvalid.Instance;
         }
+    }
+
+    visitAnonymousFunction(func: Expr.Function): BrsType {
+        return toCallable(func);
     }
 
     visitLiteral(expression: Expr.Literal): BrsType {
